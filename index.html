@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Module IA – Métiers du tertiaire | Avenir Pro Formations</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <style>
+        :root {
+            --apf-primary: #2b579a;
+            --apf-primary-dark: #1f3f73;
+            --apf-bg: #f4f4f9;
+            --apf-card-bg: #ffffff;
+            --apf-accent: #ffd965;
+            --apf-text: #333333;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: radial-gradient(circle at top, #ffffff 0, #f4f4f9 35%, #e9edf8 100%);
+            color: var(--apf-text);
+            line-height: 1.6;
+        }
+
+        header {
+            background: linear-gradient(90deg, var(--apf-primary-dark), var(--apf-primary));
+            color: #ffffff;
+            padding: 14px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.25);
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .logo-placeholder {
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            border: 2px solid #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            text-align: center;
+            padding: 4px;
+            background: rgba(255,255,255,0.1);
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 20px;
+        }
+
+        header p {
+            margin: 4px 0 0;
+            font-size: 13px;
+            opacity: 0.9;
+        }
+
+        .header-right {
+            text-align: right;
+            font-size: 12px;
+            max-width: 260px;
+        }
+
+        main {
+            max-width: 1000px;
+            margin: 24px auto 40px;
+            padding: 0 16px;
+        }
+
+        .hero {
+            background: var(--apf-card-bg);
+            border-radius: 14px;
+            padding: 20px 22px;
+            box-shadow: 0 3px 8px rgba(0,0,0,0.08);
+            margin-bottom: 22px;
+            border-left: 5px solid var(--apf-primary);
+            display: grid;
+            grid-template-columns: minmax(0, 2fr) minmax(0, 1.4fr);
+            gap: 16px;
+        }
+
+        .hero h2 {
+            margin-top: 0;
+            font-size: 22px;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 2px 10px;
+            border-radius: 999px;
+            font-size: 11px;
+            background: var(--apf-accent);
+            color: #000;
+            font-weight: bold;
+            text-transform: uppercase;
+            margin-bottom: 6px;
+        }
+
+        .hero-highlight {
+            font-size: 13px;
+            padding: 8px 10px;
+            background: #eef2fb;
+            border-radius: 8px;
+            margin-top: 6px;
+        }
+
+        .hero-right {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 10px;
+            font-size: 13px;
+        }
+
+        .tag-list span {
+            display: inline-block;
+            background: #eef2fb;
+            padding: 3px 10px;
+            border-radius: 999px;
+            font-size: 11px;
+            margin: 2px 4px 2px 0;
+        }
+
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 16px;
+            margin-bottom: 20px;
+        }
+
+        .card {
+            background: var(--apf-card-bg);
+            border-radius: 12px;
+            padding: 16px 18px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+            border-top: 3px solid var(--apf-primary);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            min-height: 170px;
+        }
+
+        .card h3 {
+            margin-top: 0;
+            font-size: 18px;
+            color: var(--apf-primary-dark);
+        }
+
+        .card p {
+            margin: 6px 0 10px;
+            font-size: 13px;
+        }
+
+        .btn {
+            display: inline-block;
+            border-radius: 999px;
+            padding: 7px 16px;
+            font-size: 13px;
+            border: none;
+            cursor: pointer;
+            text-decoration: none;
+            text-align: center;
+            white-space: nowrap;
+        }
+
+        .btn-primary {
+            background: var(--apf-primary);
+            color: #ffffff;
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: var(--apf-primary-dark);
+            border: 1px solid var(--apf-primary);
+        }
+
+        .btn:hover {
+            filter: brightness(0.92);
+        }
+
+        footer {
+            text-align: center;
+            font-size: 11px;
+            color: #666;
+            margin-top: 18px;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="header-left">
+        <div class="logo-placeholder">APF<br>Logo</div>
+        <div>
+            <h1>Module IA – Métiers du tertiaire</h1>
+            <p>Avenir Pro Formations – Supports stagiaire & formateur</p>
+        </div>
+    </div>
+    <div class="header-right">
+        <strong>Avenir Pro Formations</strong><br>
+        10 rue Pierre Sémard – 38600 Fontaine (Isère)<br>
+        Site : amidesordi.com
+    </div>
+</header>
+
+<main>
+
+    <!-- SECTION INTRO -->
+    <section class="hero">
+        <div>
+            <span class="badge">Parcours IA</span>
+            <h2>Utiliser les IA dans les métiers du tertiaire</h2>
+            <p>
+                Ce mini-site regroupe les supports pour un exercice concret autour de l’usage des IA
+                dans le traitement d’une demande client.
+            </p>
+            <div class="hero-highlight">
+                Prévoir 30 min pour l’activité + 10 min de débrief.
+            </div>
+        </div>
+        <div class="hero-right">
+            <strong>Compétences :</strong>
+            <div class="tag-list">
+                <span>Synthèse</span>
+                <span>Communication</span>
+                <span>RGPD / IA Act</span>
+                <span>Analyse</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- CARTES DE NAVIGATION -->
+    <section class="cards">
+
+        <!-- CARTE STAGIAIRE -->
+        <article class="card">
+            <div>
+                <h3>Version stagiaire</h3>
+                <p>Exercice complet avec consignes, e-mail client, et 4 tâches à réaliser.</p>
+            </div>
+            <div class="card-footer">
+                <a href="exercice-ia-tertiaire-stagiaire.html" class="btn btn-primary">
+                    ➜ Ouvrir la version stagiaire
+                </a>
+            </div>
+        </article>
+
+        <!-- CARTE FORMATEUR (AVEC MOT DE PASSE) -->
+        <article class="card">
+            <div>
+                <h3>Version formateur</h3>
+                <p>
+                    Corrections, attendus, grille d'analyse et modalités pédagogiques.
+                    Réservé aux formateurs.
+                </p>
+            </div>
+            <div class="card-footer">
+                <a href="#" class="btn btn-outline" onclick="askPassword(); return false;">
+                    🔒 Accès formateur
+                </a>
+            </div>
+        </article>
+
+        <!-- CARTE QUIZ -->
+        <article class="card">
+            <div>
+                <h3>Quiz IA & RGPD (20 questions aléatoires)</h3>
+                <p>
+                    Vérifiez si un prompt est conforme ou non au regard de la RGPD et de l’IA Act.
+                </p>
+            </div>
+            <div class="card-footer">
+                <a href="quiz-ia-rgpd.html" class="btn btn-outline">
+                    ➜ Lancer le quiz IA & RGPD
+                </a>
+            </div>
+        </article>
+
+    </section>
+
+    <footer>
+        Module IA – Avenir Pro Formations<br>
+        Co-branding possible avec « L’Ami des Ordi »
+    </footer>
+
+</main>
+
+<!-- SCRIPTS -->
+<script>
+function askPassword() {
+    const goodPassword = "APF2025";  // 🔑 Mot de passe à modifier selon tes besoins
+    const entered = prompt("Accès réservé aux formateurs.\nVeuillez saisir le mot de passe :");
+
+    if (entered === null) return;
+
+    if (entered === goodPassword) {
+        window.location.href = "exercice-ia-tertiaire-formateur.html";
+    } else {
+        alert("❌ Mot de passe incorrect");
+    }
+}
+</script>
+
+</body>
+</html>

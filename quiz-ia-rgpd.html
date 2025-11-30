@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Quiz IA & RGPD – Prompts conformes ou non ?</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <style>
+        :root {
+            --apf-primary: #2b579a;
+            --apf-primary-dark: #1f3f73;
+            --apf-bg: #f4f4f9;
+            --apf-card-bg: #ffffff;
+            --apf-accent: #ffd965;
+            --apf-text: #333333;
+            --good: #e6f4ea;
+            --bad: #fdecea;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: var(--apf-bg);
+            color: var(--apf-text);
+            line-height: 1.6;
+        }
+
+        header {
+            background: linear-gradient(90deg, var(--apf-primary-dark), var(--apf-primary));
+            color: #ffffff;
+            padding: 12px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .logo-placeholder {
+            width: 52px;
+            height: 52px;
+            border-radius: 50%;
+            border: 2px solid #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            text-align: center;
+            padding: 4px;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 20px;
+        }
+
+        header p {
+            margin: 4px 0 0;
+            font-size: 13px;
+            opacity: 0.9;
+        }
+
+        .header-right {
+            text-align: right;
+            font-size: 12px;
+            max-width: 260px;
+        }
+
+        .top-bar {
+            background: #e9edf8;
+            padding: 6px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            display: inline-block;
+            border-radius: 999px;
+            padding: 6px 14px;
+            font-size: 13px;
+            border: none;
+            cursor: pointer;
+            text-decoration: none;
+            text-align: center;
+        }
+
+        .btn-primary {
+            background: var(--apf-primary);
+            color: #ffffff;
+        }
+
+        .btn-secondary {
+            background: #e0e0e0;
+            color: #333333;
+        }
+
+        .btn:hover {
+            filter: brightness(0.92);
+        }
+
+        main {
+            max-width: 960px;
+            margin: 20px auto 40px;
+            padding: 0 16px;
+        }
+
+        .intro-card,
+        .quiz-card {
+            background: var(--apf-card-bg);
+            border-radius: 10px;
+            padding: 18px 20px;
+            margin-bottom: 18px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            border-left: 4px solid var(--apf-primary);
+        }
+
+        .intro-card h2 {
+            margin-top: 0;
+            font-size: 20px;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 999px;
+            font-size: 11px;
+            background: var(--apf-accent);
+            color: #000;
+            font-weight: bold;
+            text-transform: uppercase;
+            margin-right: 6px;
+        }
+
+        .hint {
+            font-size: 14px;
+            color: #555;
+            margin-top: 6px;
+        }
+
+        .question-wrapper {
+            background: #f9fafc;
+            border-radius: 8px;
+            padding: 14px 16px;
+            border: 1px solid #dde3f0;
+        }
+
+        .question-text {
+            font-size: 18px;      /* Texte de question plus grand */
+            line-height: 1.5;
+            margin-bottom: 12px;
+            font-weight: 500;
+        }
+
+        .progress {
+            font-size: 14px;
+            margin-bottom: 8px;
+            color: #555;
+        }
+
+        .answers {
+            font-size: 17px;      /* Texte conforme / non conforme plus grand */
+            display: flex;
+            gap: 26px;
+            flex-wrap: wrap;
+            margin-top: 8px;
+        }
+
+        label { cursor: pointer; }
+
+        .buttons-bar {
+            display: flex;
+            justify-content: flex-end;
+            gap: 8px;
+            margin-top: 12px;
+            flex-wrap: wrap;
+        }
+
+        .result-zone {
+            margin-top: 14px;
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        .score-highlight {
+            font-size: 22px;
+            font-weight: bold;
+        }
+
+        .result-details {
+            font-size: 14px;          /* Explications plus grandes */
+            margin-top: 10px;
+        }
+
+        .detail-card {
+            margin-top: 10px;
+            padding: 10px 12px;
+            border-radius: 8px;
+            border: 1px solid #dde3f0;
+            background: #fdfdfd;
+        }
+
+        .detail-card.correct {
+            background: var(--good);
+        }
+
+        .detail-card.incorrect {
+            background: var(--bad);
+        }
+
+        .detail-question {
+            font-weight: bold;
+            margin-bottom: 4px;
+            font-size: 15px;
+        }
+
+        .detail-explanation {
+            margin-top: 4px;
+            font-size: 14px;      /* Explication plus grande */
+        }
+
+        @media (max-width: 700px) {
+            header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .header-right {
+                text-align: left;
+                max-width: none;
+            }
+            .top-bar {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="header-left">
+        <div class="logo-placeholder">
+            APF<br>Logo
+        </div>
+        <div>
+            <h1>Quiz IA & RGPD – Prompts conformes ou non ?</h1>
+            <p>Avenir Pro Formations – Entraînement aux bons réflexes</p>
+        </div>
+    </div>
+    <div class="header-right">
+        <strong>Avenir Pro Formations</strong><br>
+        10 rue Pierre Sémard – 38600 Fontaine (Isère)<br>
+        Site : amidesordi.com
+    </div>
+</header>
+
+<div class="top-bar">
+    <a href="index.html" class="btn btn-secondary">⟵ Retour à l’accueil</a>
+    <button class="btn btn-primary" type="button" onclick="initQuiz(); window.scrollTo({top: 0, behavior: 'smooth'});">
+        🔄 Relancer un nouveau test (20 questions)
+    </button>
+</div>
+
+<main>
+    <section class="intro-card">
+        <span class="badge">Quiz IA & RGPD</span>
+        <h2>Reconnaître un prompt conforme ou non</h2>
+        <p>
+            Vous allez répondre à <strong>20 questions</strong>, présentées une par une,
+            choisies aléatoirement parmi un ensemble de 40 situations.
+        </p>
+        <p>
+            Pour chaque prompt, indiquez s’il vous semble :
+            <strong>Conforme</strong> (respect de la RGPD / IA Act) ou <strong>Non conforme</strong>
+            (risques sur les données personnelles, données sensibles, transparence, minimisation…).
+        </p>
+        <p class="hint">
+            À la fin, vous verrez votre résultat en <strong>pourcentage</strong>, ainsi que le détail
+            de chaque question avec la réponse attendue et une explication. Vous pouvez relancer le test
+            autant de fois que vous le souhaitez.
+        </p>
+    </section>
+
+    <section class="quiz-card">
+        <div id="question-zone">
+            <!-- Question en cours -->
+        </div>
+
+        <div class="buttons-bar" id="nav-buttons">
+            <button class="btn btn-primary" type="button" onclick="submitCurrentAnswer();">
+                ✅ Valider et continuer
+            </button>
+        </div>
+
+        <div id="quiz-result" class="result-zone" style="display:none;"></div>
+        <div id="quiz-result-details" class="result-details" style="display:none;"></div>
+
+        <div class="buttons-bar" id="retry-bar" style="display:none;">
+            <button class="btn btn-secondary" type="button" onclick="initQuiz(); window.scrollTo({top: 0, behavior: 'smooth'});">
+                🔄 Refaire un nouveau test (20 questions)
+            </button>
+        </div>
+    </section>
+</main>
+
+<script>
+    // 40 questions : { text, isCompliant (bool), explanation }
+    const QUESTIONS = [
+        {
+            text: "« Donne-moi le détail des arrêts maladie de Mme Martin (avec dates, diagnostics et médecin) pour compléter son dossier RH. »",
+            isCompliant: false,
+            explanation: "Données de santé très sensibles, identifiantes, sans anonymisation ni base légale explicite : non conforme à la RGPD."
+        },
+        {
+            text: "« Anonymise ce tableau en remplaçant les noms et prénoms par des identifiants (Client01, Client02, etc.) avant de l’analyser. »",
+            isCompliant: true,
+            explanation: "On demande d’abord une anonymisation avant traitement par l’IA : on va vers la minimisation et la protection des données."
+        },
+        {
+            text: "« Rédige une réponse type à un client mécontent, sans utiliser de données personnelles, pour un service de formation. »",
+            isCompliant: true,
+            explanation: "Prompt générique, sans données identifiantes : conforme au principe de minimisation."
+        },
+        {
+            text: "« Compare les notes de performance de chaque salarié (nom + prénom) et propose ceux qu’on devrait licencier. »",
+            isCompliant: false,
+            explanation: "Utilisation de données identifiantes et décision automatisée potentiellement discriminatoire : non conforme aux principes RGPD / IA Act."
+        },
+        {
+            text: "« Donne-moi un modèle de politique de confidentialité pour un site de PME de services, sans insérer de données réelles. »",
+            isCompliant: true,
+            explanation: "Demande de modèle générique, sans données personnelles : conforme."
+        },
+        {
+            text: "« Analyse ces conversations clients et souligne les cas où Mme Dupont a été agressive. Voici le détail des chats avec son nom complet. »",
+            isCompliant: false,
+            explanation: "Analyse comportementale d’une personne identifiée, sans anonymisation : risque important pour la vie privée."
+        },
+        {
+            text: "« Propose une checklist RGPD pour un cabinet médical, sans utiliser de noms de patients, seulement des exemples génériques. »",
+            isCompliant: true,
+            explanation: "Demande générique, sans données de patients : conforme."
+        },
+        {
+            text: "« Peux-tu corriger ce mail en gardant les informations suivantes anonymisées ? (les noms ont déjà été remplacés par X et Y) »",
+            isCompliant: true,
+            explanation: "Les données sont déjà anonymisées : on limite les risques."
+        },
+        {
+            text: "« À partir de ces fichiers, dis-moi quelles salariées enceintes ont eu le plus d’arrêts et donne le nom de leur manager. »",
+            isCompliant: false,
+            explanation: "Données de santé et de situation personnelle (grossesse) identifiables : non conforme."
+        },
+        {
+            text: "« Donne un exemple de message à envoyer à un client pour lui rappeler une facture en retard, sans nom réel, juste 'Monsieur X'. »",
+            isCompliant: true,
+            explanation: "Exemple fictif, pas de données réelles : conforme."
+        },
+        {
+            text: "« Donne-moi l’adresse postale complète de Mme Durand, cliente de la société, pour l’ajouter dans mon CRM. »",
+            isCompliant: false,
+            explanation: "On ne doit pas demander à l’IA de fournir des données personnelles d’une personne réelle : atteinte à la vie privée."
+        },
+        {
+            text: "« À partir de ces données déjà anonymisées, propose des segments de clientèle pour nos campagnes marketing. »",
+            isCompliant: true,
+            explanation: "Traitement de données anonymisées pour statistique/marketing : conforme."
+        },
+        {
+            text: "« Classe ces CV contenant nom, prénom, date de naissance et adresse selon le 'meilleur profil' pour le poste. »",
+            isCompliant: false,
+            explanation: "Décision automatisée sur des personnes identifiées, avec données personnelles complètes : à fort risque RGPD/IA Act."
+        },
+        {
+            text: "« Rédige une fiche de poste type pour un(e) assistant(e) administratif(ve) sans citer de personne réelle. »",
+            isCompliant: true,
+            explanation: "Aucune donnée personnelle, simple modèle de document : conforme."
+        },
+        {
+            text: "« Voici un questionnaire de satisfaction sans nom ni e-mail. Peux-tu en faire une synthèse ? »",
+            isCompliant: true,
+            explanation: "Pas de données identifiantes, anonymisation préalable : conforme."
+        },
+        {
+            text: "« Donne-moi le numéro de carte bancaire de M. Petit, il a dû être utilisé récemment pour un achat chez nous. »",
+            isCompliant: false,
+            explanation: "Données bancaires hautement sensibles, recherche par IA impossible et non conforme."
+        },
+        {
+            text: "« Propose 5 exemples de messages de relance d’impayé, sans utiliser de noms ou de numéros de dossier réels. »",
+            isCompliant: true,
+            explanation: "Exemples génériques non rattachés à une personne réelle : conforme."
+        },
+        {
+            text: "« Analyse ce fichier contenant nom, prénom, numéro de sécurité sociale pour détecter les fraudes. »",
+            isCompliant: false,
+            explanation: "Données très sensibles (NIR) : à traiter dans un cadre très strict, pas à injecter dans une IA généraliste."
+        },
+        {
+            text: "« J’ai remplacé les noms des salariés par des codes (SAL001, SAL002). Peux-tu analyser les taux d’absentéisme par service ? »",
+            isCompliant: true,
+            explanation: "Approche pseudonymisée/anonymisée : réduit les risques, plus conforme."
+        },
+        {
+            text: "« Donne-moi le solde bancaire actuel de Mme Martin chez sa banque. »",
+            isCompliant: false,
+            explanation: "Tentative d’obtenir une donnée bancaire personnelle : non conforme et impossible à légitimer."
+        },
+        {
+            text: "« Propose un exemple de procédure interne pour gérer les demandes de droit d’accès RGPD (sans exemple de vrai dossier). »",
+            isCompliant: true,
+            explanation: "Demande théorique, pas de données personnelles : conforme."
+        },
+        {
+            text: "« À partir de ces données clients incluant e-mail, téléphone et consommation détaillée, fais-moi une proposition de segmentation marketing. »",
+            isCompliant: false,
+            explanation: "Données identifiantes complètes envoyées à une IA généraliste : risque fort pour la confidentialité."
+        },
+        {
+            text: "« Propose 10 idées de questions anonymes à inclure dans une enquête de satisfaction en ligne. »",
+            isCompliant: true,
+            explanation: "Aucune donnée personnelle en entrée, juste de la création de contenu : conforme."
+        },
+        {
+            text: "« Réécris ce mail en version plus professionnelle, en laissant les noms déjà anonymisés (Client A, Client B). »",
+            isCompliant: true,
+            explanation: "Noms anonymisés, traitement rédactionnel : conforme."
+        },
+        {
+            text: "« Résume ce compte rendu de réunion RH, en conservant les noms des salariés pour archivage. »",
+            isCompliant: false,
+            explanation: "Inutile de garder les noms dans un résumé analytique envoyé à une IA : manque de minimisation."
+        },
+        {
+            text: "« Donne-moi un exemple de clause RGPD pour un contrat de prestation, sans mentionner d’entreprise réelle. »",
+            isCompliant: true,
+            explanation: "Contenu générique, pas de données personnelles : conforme."
+        },
+        {
+            text: "« Classe ces salariés, avec leur nom, selon qui semble le plus fragile psychologiquement, à partir de leurs e-mails. »",
+            isCompliant: false,
+            explanation: "Profilage psychologique sur des personnes identifiées : pratique très risquée et non conforme."
+        },
+        {
+            text: "« Reformule ce message d’information sur la protection des données à destination des clients (aucune donnée individuelle en pièce jointe). »",
+            isCompliant: true,
+            explanation: "Message d’information générique, pas de données personnelles : conforme."
+        },
+        {
+            text: "« Ajoute dans ce tableau les dates de naissance et les adresses postales manquantes des clients à partir d’internet. »",
+            isCompliant: false,
+            explanation: "Recherche et enrichissement de données personnelles à partir de sources externes sans base légale : non conforme."
+        },
+        {
+            text: "« Corrige l’orthographe de ce document en remplaçant tous les noms par 'XXX' avant envoi à l’IA. »",
+            isCompliant: true,
+            explanation: "Les noms sont masqués avant traitement : minimisation des données."
+        },
+        {
+            text: "« Dis-moi quels sont les salariés qui ont fait l’objet d’un avertissement disciplinaire cette année, avec leur nom complet. »",
+            isCompliant: false,
+            explanation: "Données disciplinaires identifiantes, très sensibles : non conforme."
+        },
+        {
+            text: "« Propose 5 exemples de mail pour informer les salariés de l’existence d’un traitement de données RH, sans citer d’exemple réel. »",
+            isCompliant: true,
+            explanation: "Exemples génériques, aucun cas réel cité : conforme."
+        },
+        {
+            text: "« Voici un tableau de clients avec des numéros de dossier non identifiants. Classe-les par chiffre d’affaires. »",
+            isCompliant: true,
+            explanation: "Numéros de dossier non identifiants, pas de données personnelles directes : risque limité."
+        },
+        {
+            text: "« À partir du nom 'Jean DUPONT', trouve son adresse, ses revenus et ses dettes. »",
+            isCompliant: false,
+            explanation: "Recherche intrusive sur une personne nommément désignée : non conforme à la protection de la vie privée."
+        },
+        {
+            text: "« Propose un modèle de registre des traitements RGPD pour une petite entreprise de services. »",
+            isCompliant: true,
+            explanation: "Demande de modèle, sans cas réel : conforme."
+        },
+        {
+            text: "« Donne la liste des clients qui se sont plaints de harcèlement au travail, avec leur nom et leur service. »",
+            isCompliant: false,
+            explanation: "Données sensibles (situation de harcèlement) reliées à des personnes identifiables : non conforme."
+        },
+        {
+            text: "« Voici un tableau déjà rendu anonyme (aucun nom, aucun e-mail). Propose des statistiques globales sur la satisfaction. »",
+            isCompliant: true,
+            explanation: "Données anonymes + analyse statistique : conforme."
+        },
+        {
+            text: "« Écris un texte expliquant de manière simple ce qu’est la minimisation des données, sans donner d’exemple réel. »",
+            isCompliant: true,
+            explanation: "Contenu pédagogique sans données personnelles : conforme."
+        }
+    ];
+
+    let currentQuestions = [];
+    let currentIndex = 0;
+    let answers = []; // {question, userAnswerBool, isCorrect}
+
+    function shuffle(array) {
+        const arr = array.slice();
+        for (let i = arr.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [arr[i], arr[j]] = [arr[j], arr[i]];
+        }
+        return arr;
+    }
+
+    function initQuiz() {
+        const questionZone = document.getElementById("question-zone");
+        const resultZone = document.getElementById("quiz-result");
+        const resultDetails = document.getElementById("quiz-result-details");
+        const retryBar = document.getElementById("retry-bar");
+        const navButtons = document.getElementById("nav-buttons");
+
+        currentQuestions = shuffle(QUESTIONS).slice(0, 20);
+        currentIndex = 0;
+        answers = [];
+
+        resultZone.style.display = "none";
+        resultDetails.style.display = "none";
+        retryBar.style.display = "none";
+        resultZone.innerHTML = "";
+        resultDetails.innerHTML = "";
+
+        navButtons.style.display = "flex";
+        const btn = navButtons.querySelector("button");
+        btn.textContent = "✅ Valider et continuer";
+
+        showCurrentQuestion();
+    }
+
+    function showCurrentQuestion() {
+        const questionZone = document.getElementById("question-zone");
+        const q = currentQuestions[currentIndex];
+        const total = currentQuestions.length;
+        const num = currentIndex + 1;
+
+        questionZone.innerHTML = `
+            <div class="progress">
+                Question ${num} sur ${total}
+            </div>
+            <div class="question-wrapper">
+                <div class="question-text">
+                    <strong>Prompt :</strong><br>
+                    ${q.text}
+                </div>
+                <div class="answers">
+                    <label>
+                        <input type="radio" name="answer" value="true">
+                        Conforme
+                    </label>
+                    <label>
+                        <input type="radio" name="answer" value="false">
+                        Non conforme
+                    </label>
+                </div>
+            </div>
+        `;
+
+        const navButtons = document.getElementById("nav-buttons");
+        const btn = navButtons.querySelector("button");
+        if (num === total) {
+            btn.textContent = "✅ Valider et voir le résultat";
+        } else {
+            btn.textContent = "✅ Valider et continuer";
+        }
+    }
+
+    function submitCurrentAnswer() {
+        const selected = document.querySelector('input[name="answer"]:checked');
+        if (!selected) {
+            alert("Merci de sélectionner une réponse (Conforme / Non conforme) avant de continuer.");
+            return;
+        }
+
+        const userVal = (selected.value === "true");
+        const q = currentQuestions[currentIndex];
+        const isCorrect = (userVal === q.isCompliant);
+
+        answers.push({
+            question: q,
+            userAnswer: userVal,
+            isCorrect: isCorrect
+        });
+
+        currentIndex++;
+
+        if (currentIndex < currentQuestions.length) {
+            showCurrentQuestion();
+        } else {
+            showResults();
+        }
+    }
+
+    function showResults() {
+        const questionZone = document.getElementById("question-zone");
+        const resultZone = document.getElementById("quiz-result");
+        const resultDetails = document.getElementById("quiz-result-details");
+        const retryBar = document.getElementById("retry-bar");
+        const navButtons = document.getElementById("nav-buttons");
+
+        questionZone.innerHTML = "";
+        navButtons.style.display = "none";
+
+        const total = answers.length;
+        let correctCount = 0;
+        answers.forEach(a => { if (a.isCorrect) correctCount++; });
+
+        const percentage = Math.round((correctCount * 100) / total);
+
+        resultZone.style.display = "block";
+        resultZone.innerHTML = `
+            🎯 Votre résultat : <span class="score-highlight">${percentage} %</span><br>
+            Vous avez répondu correctement à ${correctCount} questions sur ${total}.
+        `;
+
+        let detailsHtml = "";
+        answers.forEach((a, index) => {
+            const goodAnswerText = a.question.isCompliant ? "Conforme" : "Non conforme";
+            const userText = a.userAnswer ? "Conforme" : "Non conforme";
+            const cardClass = a.isCorrect ? "detail-card correct" : "detail-card incorrect";
+
+            detailsHtml += `
+                <div class="${cardClass}">
+                    <div class="detail-question">
+                        Question ${index + 1} : ${a.question.text}
+                    </div>
+                    <div>
+                        Votre réponse : <strong>${userText}</strong> –
+                        Réponse attendue : <strong>${goodAnswerText}</strong>
+                    </div>
+                    <div class="detail-explanation">
+                        ${a.question.explanation}
+                    </div>
+                </div>
+            `;
+        });
+
+        resultDetails.style.display = "block";
+        resultDetails.innerHTML = detailsHtml;
+
+        retryBar.style.display = "flex";
+    }
+
+    window.addEventListener("DOMContentLoaded", initQuiz);
+</script>
+
+</body>
+</html>

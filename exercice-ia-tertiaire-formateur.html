@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Exercice IA – Contexte tertiaire | Version formateur</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <style>
+        :root {
+            --apf-primary: #2b579a;
+            --apf-primary-dark: #1f3f73;
+            --apf-bg: #f4f4f9;
+            --apf-card-bg: #ffffff;
+            --apf-accent: #ffd965;
+            --apf-text: #333333;
+            --apf-correction: #e8f5e9;
+            --apf-important: #ffe5e5;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: var(--apf-bg);
+            color: var(--apf-text);
+            line-height: 1.6;
+        }
+
+        header {
+            background: linear-gradient(90deg, var(--apf-primary-dark), var(--apf-primary));
+            color: #ffffff;
+            padding: 12px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .logo-placeholder {
+            width: 52px;
+            height: 52px;
+            border-radius: 50%;
+            border: 2px solid #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            text-align: center;
+            padding: 4px;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 20px;
+        }
+
+        header p {
+            margin: 4px 0 0;
+            font-size: 13px;
+            opacity: 0.9;
+        }
+
+        .header-right {
+            text-align: right;
+            font-size: 12px;
+            max-width: 260px;
+        }
+
+        .top-bar {
+            background: #e9edf8;
+            padding: 6px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            display: inline-block;
+            border-radius: 999px;
+            padding: 6px 14px;
+            font-size: 12px;
+            border: none;
+            cursor: pointer;
+            text-decoration: none;
+            text-align: center;
+        }
+
+        .btn-primary {
+            background: var(--apf-primary);
+            color: #ffffff;
+        }
+
+        .btn-secondary {
+            background: #e0e0e0;
+            color: #333333;
+        }
+
+        .btn:hover {
+            filter: brightness(0.92);
+        }
+
+        main {
+            max-width: 960px;
+            margin: 20px auto 40px;
+            padding: 0 16px;
+        }
+
+        .card {
+            background: var(--apf-card-bg);
+            border-radius: 10px;
+            padding: 18px 20px;
+            margin-bottom: 18px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            border-left: 4px solid var(--apf-primary);
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 999px;
+            font-size: 11px;
+            background: var(--apf-accent);
+            color: #000;
+            font-weight: bold;
+            text-transform: uppercase;
+            margin-right: 6px;
+        }
+
+        h2 {
+            margin-top: 0;
+            font-size: 18px;
+        }
+
+        h3 {
+            margin-top: 0;
+            font-size: 17px;
+            color: var(--apf-primary-dark);
+        }
+
+        h4 {
+            margin-bottom: 4px;
+            font-size: 14px;
+        }
+
+        .small {
+            font-size: 12px;
+        }
+
+        .correction-block {
+            background: var(--apf-correction);
+            border-radius: 8px;
+            padding: 10px 12px;
+            font-size: 13px;
+            margin-top: 8px;
+        }
+
+        .important-block {
+            background: var(--apf-important);
+            border-radius: 8px;
+            padding: 10px 12px;
+            font-size: 12px;
+            margin-top: 8px;
+        }
+
+        ul {
+            margin-top: 6px;
+            margin-bottom: 6px;
+            padding-left: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 12px;
+            margin-top: 8px;
+        }
+
+        th, td {
+            border: 1px solid #cccccc;
+            padding: 6px 8px;
+            text-align: left;
+        }
+
+        th {
+            background: #eef2fb;
+        }
+
+        .footer-note {
+            font-size: 11px;
+            color: #666;
+            text-align: right;
+            margin-top: 12px;
+        }
+
+        details {
+            margin-top: 6px;
+        }
+
+        summary {
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: bold;
+            color: var(--apf-primary-dark);
+        }
+
+        @media (max-width: 700px) {
+            header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .header-right {
+                text-align: left;
+                max-width: none;
+            }
+            .top-bar {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="header-left">
+        <div class="logo-placeholder">
+            APF<br>Logo
+            <!-- Remplace par ton logo si besoin :
+            <img src="img/logo-avenir-pro-formation.png" alt="Avenir Pro Formations">
+            -->
+        </div>
+        <div>
+            <h1>Exercice IA – Contexte tertiaire</h1>
+            <p>Version formateur – Avenir Pro Formations</p>
+        </div>
+    </div>
+    <div class="header-right">
+        <strong>Avenir Pro Formations</strong><br>
+        10 rue Pierre Sémard – 38600 Fontaine (Isère)<br>
+        Site : amidesordi.com
+    </div>
+</header>
+
+<div class="top-bar">
+    <a href="index.html" class="btn btn-secondary">⟵ Retour à l’accueil</a>
+    <a href="exercice-ia-tertiaire-stagiaire.html" class="btn btn-primary">
+        👀 Voir la version stagiaire
+    </a>
+</div>
+
+<main>
+    <!-- Présentation générale -->
+    <section class="card">
+        <span class="badge">Formateur</span>
+        <h2>Objectifs pédagogiques et déroulé</h2>
+        <p>
+            <strong>Public :</strong> stagiaires en reconversion dans les métiers du tertiaire (secrétariat, RH, gestion, compta, commercial…).<br>
+            <strong>Durée :</strong> 30 minutes ( + 15 minutes de mise en commun possible).<br>
+            <strong>Objectifs :</strong>
+        </p>
+        <ul class="small">
+            <li>Utiliser une ou plusieurs IA pour synthétiser, rédiger et structurer des informations.</li>
+            <li>Appliquer ces usages dans un <strong>contexte concret de gestion de demande client</strong>.</li>
+            <li>Développer le regard critique sur les réponses d’une IA (ton, exactitude, complétude).</li>
+        </ul>
+        <div class="important-block">
+            <strong>Conseil d’animation :</strong><br>
+            Insistez sur le fait que l’IA est un <em>assistant</em> : le stagiaire reste responsable du contenu,
+            du ton et du respect des données (RGPD, confidentialité client).
+        </div>
+    </section>
+
+    <!-- Tâche 1 -->
+    <section class="card">
+        <h3>Tâche 1 – Synthèse de l’e-mail client</h3>
+        <p class="small">
+            Le stagiaire doit produire une synthèse de 4–5 lignes de l’e-mail de Mme Perrier,
+            puis une version reformulée en ton professionnel.
+        </p>
+
+        <details>
+            <summary>Attendus et éléments de correction</summary>
+            <div class="correction-block">
+                <h4>Contenu attendu</h4>
+                <ul>
+                    <li>La synthèse reprend <strong>toutes les demandes</strong> :
+                        supports fournis, versions PDF, adaptation Excel au secteur services,
+                        disponibilités de dates.</li>
+                    <li>Pas de détails inutiles, reformulation claire.</li>
+                    <li>Respect du sens et absence de contre-sens.</li>
+                </ul>
+                <h4>Exemple de synthèse possible (pour vous, à ne pas projeter tel quel)</h4>
+                <p class="small">
+                    « La cliente confirme avoir bien reçu la proposition de formation bureautique et pose plusieurs questions :
+                    fourniture des supports pédagogiques, disponibilité de versions PDF pour les exercices, possibilité d’adapter
+                    le module Excel niveau 1 au secteur des services aux entreprises. Elle demande enfin les disponibilités
+                    pour organiser la formation le mois prochain. »
+                </p>
+                <h4>Points de vigilance</h4>
+                <ul class="small">
+                    <li>Certains stagiaires oublient un des points (souvent l’exemple d’adaptation ou les dates).</li>
+                    <li>Synthèses trop longues ou trop courtes (&lt; 3 lignes, &gt; 8 lignes).</li>
+                </ul>
+            </div>
+        </details>
+    </section>
+
+    <!-- Tâche 2 -->
+    <section class="card">
+        <h3>Tâche 2 – Rédaction d’un e-mail de réponse</h3>
+        <p class="small">
+            Le stagiaire doit rédiger un e-mail professionnel qui répond point par point et propose trois créneaux.
+        </p>
+
+        <details>
+            <summary>Attendus et éléments de correction</summary>
+            <div class="correction-block">
+                <h4>Structure attendue</h4>
+                <ul class="small">
+                    <li>Objet explicite (ex. : « Réponse à vos questions sur la journée de formation bureautique »).</li>
+                    <li>Formule d’appel correcte (Madame, …).</li>
+                    <li>Réponses dans un ordre logique reprenant les questions du client.</li>
+                    <li>Proposition de 3 créneaux de dates (jour + matin/après-midi si possible).</li>
+                    <li>Formule de politesse finale et signature.</li>
+                </ul>
+                <h4>Qualité rédactionnelle</h4>
+                <ul class="small">
+                    <li>Ton courtois et professionnel.</li>
+                    <li>Pas de copier-coller brut d’une IA sans adaptation : vérifier que la réponse est crédible
+                        par rapport à votre organisation (supports fournis, PDF, etc.).</li>
+                    <li>Français correct, phrases complètes.</li>
+                </ul>
+                <h4>Erreur fréquente</h4>
+                <ul class="small">
+                    <li>L’IA invente des promesses irréalistes (par ex. plateforme en ligne inexistante) :
+                        vérifier que le stagiaire a su corriger ce point.</li>
+                </ul>
+            </div>
+        </details>
+    </section>
+
+    <!-- Tâche 3 -->
+    <section class="card">
+        <h3>Tâche 3 – Tableau de suivi interne</h3>
+        <p class="small">
+            Le stagiaire génère un tableau type « suivi des demandes clients » et le remplit avec au moins 3 lignes.
+        </p>
+
+        <details>
+            <summary>Attendus et éléments de correction</summary>
+            <div class="correction-block">
+                <h4>Structure du tableau</h4>
+                <ul class="small">
+                    <li>Colonnes présentes : Client | Demande | Niveau d’urgence | IA utilisée | Statut.</li>
+                    <li>Au moins 3 lignes, dont Novatec.</li>
+                </ul>
+                <h4>Exemple de lignes (pour le formateur)</h4>
+                <ul class="small">
+                    <li><strong>Client :</strong> Novatec – <strong>Demande :</strong> questions sur journée bureautique –
+                        <strong>Urgence :</strong> Moyen – <strong>IA :</strong> ChatGPT + Gemini –
+                        <strong>Statut :</strong> Réponse envoyée / En cours de validation.</li>
+                    <li>Autres clients fictifs possibles : « BatiServices », « MédiPlus », « GreenCompta »…</li>
+                </ul>
+                <h4>Compétences travaillées</h4>
+                <ul class="small">
+                    <li>Organisation de l’information client.</li>
+                    <li>Traçabilité de l’usage de l’IA (quelle IA a été utilisée ? pour quoi ?).</li>
+                </ul>
+            </div>
+        </details>
+    </section>
+
+    <!-- Tâche 4 -->
+    <section class="card">
+        <h3>Tâche 4 – Fiche-procédure interne</h3>
+        <p class="small">
+            Le stagiaire crée une fiche-procédure intitulée « Traiter une demande client avec l’aide d’une IA ».
+        </p>
+
+        <details>
+            <summary>Attendus et éléments de correction</summary>
+            <div class="correction-block">
+                <h4>Éléments attendus</h4>
+                <ul class="small">
+                    <li>Un titre explicite.</li>
+                    <li>4 étapes numérotées (lecture de la demande, préparation du prompt, contrôle de la réponse de l’IA,
+                        adaptation et envoi au client).</li>
+                    <li>Un encadré « Bonnes pratiques » (protection des données, anonymisation éventuelle, double vérification,
+                        ton professionnel, absence de copier-coller brut…).</li>
+                </ul>
+                <h4>Exemple d’étapes possibles (guidage formateur)</h4>
+                <ol class="small">
+                    <li>Analyser la demande du client et identifier les informations à fournir.</li>
+                    <li>Préparer un prompt clair pour l’IA (contexte + objectif + contrainte de ton).</li>
+                    <li>Lire et vérifier la réponse de l’IA (exactitude, ton, complétude).</li>
+                    <li>Adapter, corriger et mettre en forme avant d’envoyer le message au client.</li>
+                </ol>
+                <h4>Bonnes pratiques (exemples)</h4>
+                <ul class="small">
+                    <li>Ne pas transmettre de données sensibles identifiables sans consentement (RGPD).</li>
+                    <li>Relire systématiquement la production de l’IA.</li>
+                    <li>Adapter le ton au secteur et à la culture de l’entreprise.</li>
+                </ul>
+            </div>
+        </details>
+    </section>
+
+    <!-- Grille de critères -->
+    <section class="card">
+        <h3>Grille de critères – Observation formateur</h3>
+        <p class="small">
+            Cette grille est indicative et peut être adaptée à votre référentiel Qualiopi / titre professionnel.
+        </p>
+        <table>
+            <thead>
+                <tr>
+                    <th>Critère</th>
+                    <th>Description</th>
+                    <th>Observation</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Pertinence des productions</td>
+                    <td class="small">Les réponses sont complètes, cohérentes, adaptées au contexte client.</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>Maîtrise de l’outil IA</td>
+                    <td class="small">Le stagiaire utilise au moins une IA, adapte ses prompts, ne se contente pas du premier résultat.</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>Qualité rédactionnelle</td>
+                    <td class="small">Orthographe, syntaxe, ton professionnel, clarté.</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>Organisation de l’information</td>
+                    <td class="small">Tableau structuré, fiche-procédure logique, réponses hiérarchisées.</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>Esprit critique</td>
+                    <td class="small">Capacité à corriger / ajuster les productions de l’IA, à repérer les incohérences.</td>
+                    <td></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="important-block">
+            <strong>Option :</strong> vous pouvez ajouter une <em>notation sur 20</em> si l’exercice est utilisé
+            en évaluation certificative, en pondérant par exemple : 5 pts pertinence, 5 pts qualité rédactionnelle,
+            5 pts maîtrise de l’IA, 5 pts organisation / esprit critique.
+        </div>
+
+        <div class="footer-note">
+            Support formateur – Exercice IA & métiers du tertiaire – Avenir Pro Formations
+        </div>
+    </section>
+</main>
+
+</body>
+</html>
